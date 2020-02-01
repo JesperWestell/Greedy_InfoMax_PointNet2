@@ -124,12 +124,12 @@ def get_stl10_dataloader(opt):
         print("Use (train+val) / test split")
 
     return (
-        unsupervised_loader,
-        unsupervised_dataset,
-        train_loader,
-        train_dataset,
-        test_loader,
-        test_dataset,
+        unsupervised_loader,    # train_loader
+        unsupervised_dataset,   # train_dataset
+        train_loader,           # supervised_loader
+        train_dataset,          # supervised_dataset
+        test_loader,            # test_loader
+        test_dataset,           # test_dataset
     )
 
 
