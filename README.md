@@ -1,3 +1,6 @@
+# Using Greedy InfoMax with PointNet++
+This is my attempt at using Greedy InfoMax to train a PointNet++, hopefully utilizing information from large unlabeled point cloud datasets in both classification and semantic segmentation of 3D point clouds.
+
 # Greedy InfoMax
 
 We can train a neural network **without end-to-end backpropagation** and achieve competitive performance.
