@@ -6,15 +6,27 @@ def parse_GIM_args(parser):
         "--learning_rate", type="float", default=2e-4, help="Learning rate"
     )
     group.add_option(
-        "--prediction_step",
+        "--subcloud_ball_radius",
         type="int",
-        default=5,
-        help="Time steps to predict into future",
+        default=0.4,  # 0.4 with 4x4x4 cube means we miss ~0.2% of points during training
+        help="Radius of ball used to collect points for each sub point cloud",
+    )
+    group.add_option(
+        "--subcloud_num_points",
+        type="int",
+        default=256,
+        help="Number of maximum points to be collected for each sub point cloud",
+    )
+    group.add_option(
+        "--subcloud_cube_size",
+        type="int",
+        default=4,
+        help="Size of cube to divide the each point cloud into. Size 2 = 2^3 = 8 sub clouds, size 3 = 3^3 = 27 sub clouds etc.",
     )
     group.add_option(
         "--negative_samples",
         type="int",
-        default=16,
+        default=8,
         help="Number of negative samples to be used for training",
     )
     group.add_option(
@@ -29,7 +41,7 @@ def parse_GIM_args(parser):
         type="int",
         default=3,
         help="Index of the module to be trained individually (0-2), "
-        "or training network as one (3)",
+             "or training network as one (3)",
     )
 
     parser.add_option_group(group)

@@ -30,10 +30,11 @@ def parser_reload_args(parser):
         "--model_type",
         type="int",
         default=0,
-        help="Which type of model to use for training of linear classifier on downstream task:"
-        "0 - pretrained GreedyInfoMax/CPC model"
-        "1 - randomly initialized model"
-        "2 - fully supervised model",
+        help="(Not really used in my project, use --loss instead to decide what to train)"
+             "Which type of model to use for training of linear classifier on downstream task:"
+             "0 - pretrained GreedyInfoMax/CPC model"
+             "1 - randomly initialized model"
+             "2 - fully supervised model",
     )
     parser.add_option_group(group)
     return parser

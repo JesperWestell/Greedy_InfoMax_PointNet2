@@ -2,8 +2,8 @@ def parse_general_args(parser):
     parser.add_option(
         "--experiment",
         type="string",
-        default="3D_pointclouds",
-        help="not a real option, just for bookkeeping",
+        default="vision",
+        help="not a real option, just for bookkeeping (stays the same for pointnet)",
     )
     parser.add_option(
         "--dataset",
@@ -15,7 +15,7 @@ def parse_general_args(parser):
         "--num_workers", type="int", default=8, help="Number of dataloader workers"
     )
     parser.add_option(
-        "--num_points", type="int", default=1024, help="Number of points in each point cloud"
+        "--num_points", type="int", default=1024, help="Number of points in each point cloud, max 2048"
     )
     parser.add_option(
         "--num_unsupervised_training_samples", type="int", default=8000,
@@ -26,10 +26,7 @@ def parse_general_args(parser):
         "--num_epochs", type="int", default=300, help="Number of Epochs for Training"
     )
     parser.add_option("--seed", type="int", default=2, help="Random seed for training")
-    parser.add_option("--batch_size", type="int", default=32, help="Batchsize")
-    parser.add_option(
-        "--resnet", type="int", default=50, help="Resnet version (options 34 and 50)"
-    )
+    parser.add_option("--batch_size", type="int", default=6, help="Batchsize")
     parser.add_option(
         "-i",
         "--data_input_dir",
@@ -45,24 +42,19 @@ def parse_general_args(parser):
         help="Directory to store bigger datafiles (dataset and models)",
     )
     parser.add_option(
+        "--loss",
+        type="string",
+        default="info_nce",
+        help="Loss function to use for training:"
+        "info_nce - InfoNCE loss"
+        "supervised - supervised loss using class labels for training whole network"
+        "classifier - supervised loss on classifier with pre-trained encoder modules",
+    )
+    parser.add_option(
         "--validate",
         action="store_true",
-        default=False,
-        help="Boolean to decide whether to split train dataset into train/val and plot validation loss (True) or combine train+validation set for final testing (False)",
-    )
-    parser.add_option(
-        "--loss",
-        type="int",
-        default=0,
-        help="Loss function to use for training:"
-        "0 - InfoNCE loss"
-        "1 - supervised loss using class labels",
-    )
-    parser.add_option(
-        "--grayscale",
-        action="store_true",
-        default=False,
-        help="Boolean to decide whether to convert images to grayscale (default: true)",
+        default=True,
+        help="Boolean to decide whether to plot validation loss (True) or not (False)",
     )
     parser.add_option(
         "--weight_init",

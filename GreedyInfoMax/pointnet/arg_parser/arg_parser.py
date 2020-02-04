@@ -22,6 +22,11 @@ def parse_args():
     # Device configuration
     opt.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+    if opt.dataset == "modelnet40":
+        opt.num_classes = 40
+    else:
+        raise NotImplementedError
+
     return opt
 
 
