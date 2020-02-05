@@ -1,128 +1,15 @@
 # Using Greedy InfoMax with PointNet++
-This is my attempt at using Greedy InfoMax to train a PointNet++, hopefully utilizing information from large unlabeled point cloud datasets in both classification and semantic segmentation of 3D point clouds.
+We use the Greedy InfoMax algorithm to train a PointNet++. Still in an experimentation phase. If successful, the algorithm may be used in learning deep representations of 3D point clouds using large unlabeled datasets, which can then be used in both classification and semantic segmentation.
 
-# Greedy InfoMax
+## Dependencies and Usage
+TBD
 
-We can train a neural network **without end-to-end backpropagation** and achieve competitive performance.
+## Acknowledgements
+* [loeweX/Greedy_InfoMax](https://github.com/loeweX/Greedy_InfoMax): Paper author and official repo, Greedy Infomax.
+* [charlesq34/pointnet2](https://github.com/charlesq34/pointnet2): Paper author and official code repo, PointNet++.
+* [sshaoshuai/Pointnet2.PyTorch](https://github.com/sshaoshuai/Pointnet2.PyTorch): PyTorch implementation of PointNet++, mainly used in this repo.
 
-This repo provides the code for the audio experiments in our paper:
+## Papers
+* [Putting An End to End-to-End: Gradient-Isolated Learning of Representations - Löwe et al.](https://arxiv.org/abs/1905.11786)
+* [PointNet++: Deep Hierarchical Feature Learning on Point Sets in a Metric Space - Qi et al.](https://arxiv.org/abs/1706.02413)
 
-Sindy Löwe*, Peter O'Connor, Bastiaan S. Veeling* - [Putting An End to End-to-End: Gradient-Isolated Learning of Representations](https://arxiv.org/abs/1905.11786)
-
-&ast;equal contribution
-
-
-## What is Greedy InfoMax?
-
-We simply divide existing architectures into gradient-isolated modules and optimize the mutual information between cross-patch intermediate representations.
-
-
-![The Greedy InfoMax Learning Approach](media/architecture.png)
-
-
-What we found exciting is that despite each module being trained greedily, it improves upon the representation of the previous module. This enables you to keep stacking modules until downstream performance saturates.
-
-<p align="center"> 
-    <img src="./media/LatentClassification.png" width="700">
-</p>
-
-
-## How to run the code
-
-### Dependencies
-
-- [Python and Conda](https://www.anaconda.com/)
-- Setup the conda environment `infomax` by running:
-
-    ```bash
-    bash setup_dependencies.sh
-    ```
-
-Additionally, for the audio experiments:
-- Install [torchaudio](https://github.com/pytorch/audio) in the `infomax` environment
-- Download audio datasets 
-    ```bash 
-    bash download_audio_data.sh
-    ```
-
-### Usage
-
-#### Vision Experiments
-- To replicate the vision results from our paper, run
-
-    ``` bash
-    source activate infomax
-    bash vision_traineval.sh
-    ```
-    This will train the Greedy InfoMax model as well as evaluate it by training a linear image classifiers on top of it
-    
-    
-
-- View all possible command-line options by running
-
-    ``` bash
-    python -m GreedyInfoMax.vision.main_vision --help
-    ```    
-    
-    Some of the more important options are:
-    
-    * in order to train the baseline CPC model with end-to-end backpropagation instead of the Greedy InfoMax model set: 
-    ```bash
-    --model_splits 1
-    ```
-
-    * If you want to save GPU memory, you can train layers sequentially, one at a time, by setting the module to be trained (0-2), e.g.
-    
-    ```bash 
-    --train_module 0
-    ```
-
-
-#### Audio Experiments
-- To replicate the audio results from our paper, run
-
-    ``` bash
-    source activate infomax
-    bash audio_traineval.sh
-    ```
-    This will train the Greedy InfoMax model as well as evaluate it by training two linear classifiers on top of it - one for speaker and one for phone classification.
-    
-    
-
-- View all possible command-line options by running
-
-    ``` bash
-    python -m GreedyInfoMax.audio.main_audio --help
-    ```    
-    
-    Some of the more important options are:
-    
-    * in order to train the baseline CPC model with end-to-end backpropagation instead of the Greedy InfoMax model set: 
-    ```bash
-    --model_splits 1
-    ```
-
-    * If you want to save GPU memory, you can train layers sequentially, one at a time, by setting the layer to be trained (0-5), e.g.
-    
-    ```bash 
-    --train_layer 0
-    ```
-    
-
-
-## Cite
-
-Please cite our paper if you use this code in your own work:
-
-```
-@article{lowe2019putting,
-  title={Putting An End to End-to-End: Gradient-Isolated Learning of Representations},
-  author={L{\"o}we, Sindy and O'Connor, Peter and Veeling, Bastiaan S},
-  journal={arXiv preprint arXiv:1905.11786},
-  year={2019}
-}
-```
-
-
-## References 
-- [Representation Learning with Contrastive Predictive Coding - Oord et al.](https://arxiv.org/abs/1807.03748)
