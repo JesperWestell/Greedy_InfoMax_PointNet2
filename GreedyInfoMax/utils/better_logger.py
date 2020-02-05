@@ -30,8 +30,11 @@ class Logger:
     def save_classifier(self, model, epoch=0):
         self.save_model(model, epoch, name="classification_model")
 
-    def save_optimizer(self, model, epoch=0):
-        self.save_model(model, epoch, name="optim")
+    def save_optimizer(self, optim, epoch=0):
+        if not isinstance(optim, list):
+            optim = [optim]
+        for i, o in enumerate(optim):
+            self.save_model(o, epoch, name="optim_{}".format(i))
 
     def save_model(self, model, epoch=0, name="model"):
         print("Saving {} to ".format(name) + self.opt.log_path)

@@ -17,9 +17,8 @@ def validate(opt, model, test_loader):
     for step, (img, label) in enumerate(test_loader):
 
         model_input = img.to(opt.device)
-        label = label.to(opt.device)
 
-        loss, _ = model(model_input, label)
+        loss, _ = model(model_input)
         loss = torch.mean(loss, 0)
 
         loss_epoch += loss.data.cpu().numpy()
@@ -92,7 +91,7 @@ def train(opt, model):
                 loss_updates[idx] += 1
 
         for i in range(len(loss_epoch)):
-            logs.log_scalar(loss_epoch[i], "train_loss_{}".format(i))
+            logs.log_scalar(loss_epoch[i]/total_step, "train_loss_{}".format(i))
 
         if opt.validate:
             validation_loss = validate(opt, model, test_loader)
