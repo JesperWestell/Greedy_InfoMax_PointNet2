@@ -14,6 +14,18 @@ For comparision, classification training has been performed in a fully supervise
 
 Initial results show that with a very small amount of training data, we can indeed see a performance gain, if pre-training on unlabeled data.
 
+#### Top 1 Test Accuracy
+
+<p align="center"> 
+    <img src="./initialresults_media/acc1.png" width="700">
+</p>
+
+#### Top 5 Test Accuracy
+
+<p align="center"> 
+    <img src="./initialresults_media/acc5.png" width="700">
+</p>
+
 
 ## Acknowledgements
 * [loeweX/Greedy_InfoMax](https://github.com/loeweX/Greedy_InfoMax): Paper author and official repo, Greedy Infomax.
