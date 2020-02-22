@@ -20,6 +20,7 @@ class PointCloudGrouper(nn.Module):
                                   for z in range(opt.subcloud_cube_size)]).unsqueeze(0).to(opt.device)
         centers -= (opt.subcloud_cube_size - 1) / 2
         centers *= opt.subcloud_ball_radius
+        centers = centers.repeat(opt.batch_size,1,1)
         return centers
 
     def forward(self, xyz):
@@ -29,4 +30,7 @@ class PointCloudGrouper(nn.Module):
         xyz = xyz.permute(0, 2, 3, 1)
         # B, cube_size^3, num_points, 3)  ->  (B*cube_size^3, num_points, 3)
         xyz = xyz.reshape(xyz.shape[0]*xyz.shape[1], xyz.shape[2], xyz.shape[3])
-        return xyz
+
+        failed_groups = torch.eq(torch.eq(xyz[:,1], xyz[:,2]).sum(dim=1),3)
+
+        return xyz, failed_groups

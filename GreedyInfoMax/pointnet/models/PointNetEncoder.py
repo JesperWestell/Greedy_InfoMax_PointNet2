@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 from GreedyInfoMax.pointnet.models.InfoNCE_Loss import InfoNCE_Loss
 
@@ -16,18 +17,19 @@ class PointNetEncoder(nn.Module):
         self.loss = InfoNCE_Loss(opt,
                                  in_channels=feature_length,
                                  out_channels=feature_length)
+        self.failed_groups = None
 
     def set_calc_loss(self, calc_loss):
         self.calc_loss = calc_loss
 
     def _patchify(self, x):
-        x = self.grouper(xyz=x)
-        return x
+        x, failed_groups = self.grouper(xyz=x)
+        return x, failed_groups
 
-    def forward(self, xyz, features):
+    def forward(self, xyz, features, failed_groups=None):
         if self.calc_loss and self.encoder_num == 0:
             assert features is None  # Should only do this at first layer
-            xyz = self._patchify(xyz)
+            xyz, failed_groups = self._patchify(xyz)
 
         for m in self.SA_modules:
             xyz, features = m(xyz=xyz, features=features)
@@ -41,8 +43,13 @@ class PointNetEncoder(nn.Module):
                           z.shape[1])
             z = z.permute(0,4,1,2,3)  # (B, C, cube_size, cube_size, cube_size)
 
-            loss = self.loss(z, z)
+            targets_to_ignore = failed_groups.reshape(-1,
+                                                      self.opt.subcloud_cube_size,
+                                                      self.opt.subcloud_cube_size,
+                                                      self.opt.subcloud_cube_size)
+
+            loss = self.loss(z, z, targets_to_ignore=targets_to_ignore)
         else:
             loss = None
 
-        return xyz, features, loss
+        return xyz, features, loss, failed_groups
