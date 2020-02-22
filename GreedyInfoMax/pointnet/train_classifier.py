@@ -2,6 +2,7 @@ import torch
 import numpy as np
 import time
 import os
+import glob
 
 ## own modules
 from GreedyInfoMax.pointnet.data import get_dataloader
@@ -58,7 +59,7 @@ def train_logistic_regression(opt, context_model, predict_model):
             sample_loss = loss.item()
             loss_epoch += sample_loss
 
-            if step % 10 == 0:
+            if step % 50 == 0:
                 print(
                     "Epoch [{}/{}], Step [{}/{}], Time (s): {:.1f}, Acc1: {:.4f}, Acc5: {:.4f}, Loss: {:.4f}".format(
                         epoch + 1,
@@ -128,7 +129,7 @@ def test_logistic_regression(opt, context_model, predict_model):
         sample_loss = loss.item()
         loss_epoch += sample_loss
 
-        if step % 10 == 0:
+        if step % 50 == 0:
             print(
                 "Step [{}/{}], Time (s): {:.1f}, Acc1: {:.4f}, Acc5: {:.4f}, Loss: {:.4f}".format(
                     step, total_step, time.time() - starttime, acc1, acc5, sample_loss
@@ -146,18 +147,20 @@ if __name__ == "__main__":
     arg_parser.create_log_path(opt, add_path_var=add_path_var)
     print(opt)
 
-    assert opt.loss in ["supervised", "classifier"], "Invalid --loss argument! One of [supervised, classifier]!"
+    assert len(glob.glob(os.path.join(opt.log_path, "*.ckpt"))) == 0, "Log path already existing!"
 
-    # random seeds
-    torch.manual_seed(opt.seed)
-    torch.cuda.manual_seed(opt.seed)
-    np.random.seed(opt.seed)
+    assert opt.loss in ["supervised", "classifier"], "Invalid --loss argument! One of [supervised, classifier]!"
 
     # load context model
     reload_model = True if opt.loss == "classifier" else False
     context_model, _ = load_pointnet_model.load_model_and_optimizer(opt, reload_model=reload_model)
 
     classification_model = load_pointnet_model.load_classification_model(opt)
+
+    # random seeds after classification model initialization
+    torch.manual_seed(opt.seed)
+    torch.cuda.manual_seed(opt.seed)
+    np.random.seed(opt.seed)
 
     _, _, train_loader, _, test_loader, _ = get_dataloader.get_dataloader(opt)
 

@@ -102,9 +102,10 @@ class Pointnet2SSG(nn.Module):
         loss = torch.zeros(1, self.opt.model_splits, device=cur_device)  # first dimension for multi-GPU training
 
         xyz, features = self._break_up_pc(pointcloud)
+        failed_groups = None
 
         for im, module in enumerate(self.encoder):
-            new_xyz, new_features, cur_loss = module(xyz, features)
+            new_xyz, new_features, cur_loss, failed_groups = module(xyz, features, failed_groups)
 
             if self.opt.loss == 'info_nce':  # Detach gradients if optimizing locally
                 if new_xyz is None:

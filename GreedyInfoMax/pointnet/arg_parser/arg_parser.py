@@ -4,7 +4,7 @@ import os
 import torch
 import numpy as np
 
-from GreedyInfoMax.pointnet.arg_parser import reload_args, GIM_args, general_args
+from GreedyInfoMax.pointnet.arg_parser import reload_args, GIM_args, general_args, plotter_args
 
 
 def parse_args():
@@ -14,6 +14,7 @@ def parse_args():
     parser = general_args.parse_general_args(parser)
     parser = GIM_args.parse_GIM_args(parser)
     parser = reload_args.parser_reload_args(parser)
+    parser = plotter_args.parse_plotter_args(parser)
 
     (opt, _) = parser.parse_args()
 

@@ -17,6 +17,7 @@ import os
 import h5py
 import subprocess
 import shlex
+import json
 
 def _get_data_files(list_filename):
     with open(list_filename) as f:
@@ -24,10 +25,16 @@ def _get_data_files(list_filename):
 
 
 def _load_data_file(name):
-    f = h5py.File(name)
+    f = h5py.File(name, "r")
     data = f["data"][:]
     label = f["label"][:]
     return data, label
+
+def _load_model_names(filename):
+    with open(filename, 'r') as f:
+        names = json.load(f)
+    return names
+
 
 
 class ModelNet40Cls(data.Dataset):
@@ -58,11 +65,17 @@ class ModelNet40Cls(data.Dataset):
         else:
             self.files = _get_data_files(os.path.join(unzip_dir, "test_files.txt"))
 
+        self.names = []
         point_list, label_list = [], []
         for f in self.files:
             points, labels = _load_data_file(os.path.join(data_dir, f))
             point_list.append(points)
             label_list.append(labels)
+
+            # Read model names for referencing when plotting point clouds
+            f = os.path.splitext(f)[0]
+            f = f[:-1] + "_{:s}_id2file.json".format(f[-1])
+            self.names.extend(_load_model_names(os.path.join(data_dir, f)))
 
         self.points = np.concatenate(point_list, 0)
         self.labels = np.concatenate(label_list, 0)
