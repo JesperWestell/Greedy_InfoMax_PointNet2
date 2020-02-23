@@ -1,5 +1,21 @@
 # Using Greedy InfoMax with PointNet++
-We use the Greedy InfoMax algorithm to train a PointNet++. Still in an experimentation phase. If successful, the algorithm may be used in learning deep representations of 3D point clouds using large unlabeled datasets, which can then be used in both classification and semantic segmentation.
+We use the Greedy InfoMax algorithm to train a PointNet++. 
+In contrast to the original Greedy Infomax algorithm, where patches are created from highly regular data fromats, such as images and audio, we create patches directly from unordered sets of 3D points.
+This is possible by utilizing the query and grouping functions used in the PointNet++ algorithm. 
+Each 1024-point 3D point cloud are queried using a 4x4x4 cube with positions [-0.6, -0.2, 0.2, 0.6] in all 3 axes, using a sphere query of radius 0.4.
+The result is up to 64 256-point 3D point clouds sampled from the original point cloud.
+Two examples of this querying and grouping can seen below.
+
+<p align="center"> 
+    <img src="./media/points.gif" width="800">
+</p>
+
+The Greedy Infomax objective has been adapted for a 3D cube of "patches" instead of 2D and 1D representations of images and audio from the original paper.
+As you might see, due to the irregular shapes of 3D models, for some positions in the cube, there won't be any 3D points to gather.
+These groups are ignored and do not contribute the the input gradient.
+
+
+The algorithm may be used in learning deep representations of 3D point clouds using large unlabeled datasets, which can then be used in both classification and semantic segmentation.
 
 ## Dependencies and Usage
 TBD
@@ -7,7 +23,7 @@ TBD
 ## Early Experiments
 The 9843 models in the training dataset of ModelNet40 have been divided into unsupervised training data (9000) and supervised training data (843).
 
-Greedy InfoMax have been performed on the unsupervised data, splitting each 1024-point pointcloud into 4x4x4 256-point subclouds of uniform spacing [-0.6, -0.2, 0.2, 0.6] in all 3 axes, using a sphere query of radius 0.4. The network have been trained unsupervised for 205 epochs using default hyperparameters.
+Greedy InfoMax have been performed on the unsupervised data for 205 epochs using default hyperparameters.
 
 The network has been fine-tuned using the training data, for 200 epochs, training only the fully-connected layers of the model.
 For comparision, classification training has been performed in a fully supervised manner by training the whole network end-to-end, with randomly initialized parameters. 

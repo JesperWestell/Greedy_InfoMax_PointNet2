@@ -107,10 +107,10 @@ def show_subclouds(opt, context_model, test_loader):
         v2_name = opt.name_of_3dmodel.split("/")[1][:-4] + "_patches"
         v1.record(opt.plotted_images_folder,
                   get_rotating_poses(angle=np.pi / 4, radius=3),
-                4 * np.arange(5), interp='linear', prefix=v1_name)
+                2 * np.arange(5), interp='linear', prefix=v1_name)
         v2.record(opt.plotted_images_folder,
                   get_rotating_poses(angle=np.pi / 4, radius=7),
-                4 * np.arange(5), interp='linear', prefix=v2_name)
+                2 * np.arange(5), interp='linear', prefix=v2_name)
 
 
 if __name__ == "__main__":
