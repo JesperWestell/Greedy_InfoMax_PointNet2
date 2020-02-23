@@ -20,7 +20,7 @@ class PointCloudGrouper(nn.Module):
                                   for z in range(opt.subcloud_cube_size)]).unsqueeze(0).to(opt.device)
         centers -= (opt.subcloud_cube_size - 1) / 2
         centers *= opt.subcloud_ball_radius
-        centers = centers.repeat(opt.batch_size,1,1)
+        centers = centers.repeat(opt.batch_size, 1, 1)
         return centers
 
     def forward(self, xyz):
@@ -31,6 +31,11 @@ class PointCloudGrouper(nn.Module):
         # B, cube_size^3, num_points, 3)  ->  (B*cube_size^3, num_points, 3)
         xyz = xyz.reshape(xyz.shape[0]*xyz.shape[1], xyz.shape[2], xyz.shape[3])
 
+        # If there are no points to gather within the sphere for a group, the function used in QueryAndGroup will
+        # simply fill the group with copies of the center point. While this works without problems when grouping in
+        # the PointNet++ algorithm, in our case it will result in creating points that don't exist in the original
+        # point cloud. To fix this, we need to keep track of these 'failed' groups so that we ignore them in the
+        # loss function.
         failed_groups = torch.eq(torch.eq(xyz[:,1], xyz[:,2]).sum(dim=1),3)
 
         return xyz, failed_groups
