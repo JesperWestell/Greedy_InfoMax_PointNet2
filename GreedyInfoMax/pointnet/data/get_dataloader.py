@@ -32,6 +32,11 @@ def get_dataloader(opt):
     )
 
 def get_modelnet40_dataloaders(opt):
+    try:
+        os.mkdir(opt.data_input_dir)
+    except:
+        pass
+
     base_folder = os.path.join(opt.data_input_dir, "modelnet40")
 
     transforms = torchvision.transforms.transforms.Compose(

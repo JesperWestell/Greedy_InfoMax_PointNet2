@@ -20,12 +20,11 @@ class PointCloudGrouper(nn.Module):
                                   for z in range(opt.subcloud_cube_size)]).unsqueeze(0).to(opt.device)
         centers -= (opt.subcloud_cube_size - 1) / 2
         centers *= opt.subcloud_ball_radius
-        centers = centers.repeat(opt.batch_size, 1, 1)
         return centers
 
     def forward(self, xyz):
         # (B, N, 3)  ->  (B, 3, cube_size^3, num_points)
-        xyz = self.splitter(xyz, self.centers)
+        xyz = self.splitter(xyz, self.centers.repeat(xyz.shape[0], 1, 1))
         # (B, 3, cube_size^3, num_points)  ->  (B, cube_size^3, num_points, 3)
         xyz = xyz.permute(0, 2, 3, 1)
         # B, cube_size^3, num_points, 3)  ->  (B*cube_size^3, num_points, 3)

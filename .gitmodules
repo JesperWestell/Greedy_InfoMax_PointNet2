@@ -1,3 +1,3 @@
 [submodule "PointNet2"]
 	path = PointNet2
-	url = git@github.com:sshaoshuai/Pointnet2.PyTorch.git
+	url = https://github.com/sshaoshuai/Pointnet2.PyTorch.git

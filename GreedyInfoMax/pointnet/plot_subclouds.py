@@ -100,15 +100,15 @@ def show_subclouds(opt, context_model, test_loader):
     else:
         try:
             import os
-            os.mkdir(opt.plotted_images_folder)
+            os.mkdir(opt.plotted_image_folder)
         except:
             pass
         v1_name = opt.name_of_3dmodel.split("/")[1][:-4] + "_complete"
         v2_name = opt.name_of_3dmodel.split("/")[1][:-4] + "_patches"
-        v1.record(opt.plotted_images_folder,
+        v1.record(opt.plotted_image_folder,
                   get_rotating_poses(angle=np.pi / 4, radius=3),
                 2 * np.arange(5), interp='linear', prefix=v1_name)
-        v2.record(opt.plotted_images_folder,
+        v2.record(opt.plotted_image_folder,
                   get_rotating_poses(angle=np.pi / 4, radius=7),
                 2 * np.arange(5), interp='linear', prefix=v2_name)
 
@@ -120,10 +120,10 @@ if __name__ == "__main__":
     opt.batch_size = 1
     opt.num_unsupervised_training_samples = 1
 
-    opt.data_input_dir = "/home/jesper/git-repos/Greedy_InfoMax_with_PointNet/datasets"
+    #opt.data_input_dir = "/home/jesper/git-repos/Greedy_InfoMax_with_PointNet/datasets"
 
     opt.save_plot_frames = False
-    opt.plotted_images_folder = "/home/jesper/git-repos/Greedy_InfoMax_with_PointNet/gif_images"
+    #opt.plotted_image_folder = "/home/jesper/git-repos/Greedy_InfoMax_with_PointNet/gif_images"
 
     opt.name_of_3dmodel = "airplane/airplane_0630.ply"
     #opt.name_of_3dmodel = "toilet/toilet_0387.ply"

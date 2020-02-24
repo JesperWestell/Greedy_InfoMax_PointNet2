@@ -7,7 +7,7 @@ def parse_GIM_args(parser):
     )
     group.add_option(
         "--subcloud_ball_radius",
-        type="int",
+        type="float",
         default=0.4,  # 0.4 with 4x4x4 cube means we miss ~0.2% of points during training
         help="Radius of ball used to collect points for each sub point cloud",
     )

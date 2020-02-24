@@ -118,7 +118,7 @@ if __name__ == "__main__":
         torch.backends.cudnn.benchmark = True
 
     # load model and optimizer
-    model, optimizer = load_pointnet_model.load_model_and_optimizer(opt)
+    model, optimizer = load_pointnet_model.load_model_and_optimizer(opt, 1)
 
     logs = Logger(opt)
     logs.save_opt()
