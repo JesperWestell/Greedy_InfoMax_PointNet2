@@ -42,6 +42,7 @@ For each entry in the plots below, I trained three models using randomly initial
 ## Requirements
 - Linux (tested on Ubuntu 14.04/16.04/18.04)
 - [Conda](https://www.anaconda.com/)
+
 ## Installation
 Setup the conda environment by running
 ```sh
@@ -75,7 +76,6 @@ Fully supervised training
 ```
 python -m GreedyInfoMax.pointnet.train_classifier --loss supervised --save_dir pointnet_supercls0 --num_unsupervised_training_samples 8000
 ```
-
 
 ## Acknowledgements
 * [loeweX/Greedy_InfoMax](https://github.com/loeweX/Greedy_InfoMax): Paper author and official repo, Greedy Infomax.
