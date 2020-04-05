@@ -125,7 +125,7 @@ if __name__ == "__main__":
     opt.save_plot_frames = False
     #opt.plotted_image_folder = "/home/jesper/git-repos/Greedy_InfoMax_with_PointNet/gif_images"
 
-    opt.name_of_3dmodel = "airplane/airplane_0630.ply"
+    #opt.name_of_3dmodel = "airplane/airplane_0630.ply"
     #opt.name_of_3dmodel = "toilet/toilet_0387.ply"
 
     # random seeds
