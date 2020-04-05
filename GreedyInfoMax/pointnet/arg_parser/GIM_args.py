@@ -26,7 +26,7 @@ def parse_GIM_args(parser):
     group.add_option(
         "--negative_samples",
         type="int",
-        default=8,
+        default=12,
         help="Number of negative samples to be used for training",
     )
     group.add_option(

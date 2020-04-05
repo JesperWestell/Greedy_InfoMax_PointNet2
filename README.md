@@ -1,10 +1,9 @@
 # Using Greedy InfoMax with PointNet++
-We use the Greedy InfoMax algorithm to train a PointNet++. 
-In contrast to the original Greedy Infomax algorithm, where patches are created from highly regular data fromats, such as images and audio, we create patches directly from unordered sets of 3D points.
+In contrast to the original Greedy Infomax algorithm, where patches are created from highly regular data formats, such as images and audio, we create patches directly from unordered sets of 3D points.
 This is possible by utilizing the query and grouping functions used in the PointNet++ algorithm. 
-Each 1024-point 3D point clouds are queried using a 4x4x4 cube with positions [-0.6, -0.2, 0.2, 0.6] in all 3 axes, using a sphere query of radius 0.4.
-The result is up to 64 256-point 3D point clouds sampled from the original point cloud.
-Two examples of this querying and grouping can seen below.
+Each 1024-point 3D point clouds are queried using a 3x3x3 cube with positions [-0.5, 0, 0.5] in all 3 axes, using a sphere query of radius 0.5.
+The result is up to 27 256-point 3D point clouds sampled from the original point cloud.
+Two examples of this querying and grouping can be seen below.
 
 <p align="center"> 
     <img src="./media/points.gif" width="500">
@@ -19,26 +18,28 @@ The algorithm may be used in learning deep representations of 3D point clouds us
 ## Dependencies and Usage
 TBD
 
-## Early Experiments
-The 9843 models in the training dataset of ModelNet40 have been divided into unsupervised training data (9000) and supervised training data (843).
+## Experiments
+The 9843 models in the training dataset of ModelNet40 have been divided into unsupervised training data (8000) and supervised training data (1843).
 
-Greedy InfoMax have been performed on the unsupervised data for 205 epochs using default hyperparameters.
+Greedy InfoMax has been performed on the unsupervised data for 300 epochs using default hyperparameters.
 
-The network has been fine-tuned using the training data, for 200 epochs, training only the fully-connected layers of the model.
+The network has been fine-tuned using the training data, for an additional 300 epochs, training only the fully-connected layers of the model.
 For comparison, classification training has been performed in a fully supervised manner by training the whole network end-to-end, with randomly initialized parameters. 
 
-Initial results show that with a very small amount of training data, we can indeed see a performance gain, if pre-training on unlabeled data.
+Initial results show that we can indeed see a performance gain, if pre-training on unlabeled data. 
+With a very small amount of training data, the performance difference is even greater.
+For each entry in the plots below, I trained three models using randomly initialized network weights, for a more robust comparison.
 
 #### Top 1 Test Accuracy
 
 <p align="center"> 
-    <img src="./initialresults_media/acc1.png" width="700">
+    <img src="./media/img_val_acc1.png" width="700">
 </p>
 
 #### Top 5 Test Accuracy
 
 <p align="center"> 
-    <img src="./initialresults_media/acc5.png" width="700">
+    <img src="./media/img_val_acc5.png" width="700">
 </p>
 
 

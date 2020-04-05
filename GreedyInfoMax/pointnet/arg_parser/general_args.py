@@ -26,7 +26,7 @@ def parse_general_args(parser):
         "--num_epochs", type="int", default=300, help="Number of Epochs for Training"
     )
     parser.add_option("--seed", type="int", default=2, help="Random seed for training")
-    parser.add_option("--batch_size", type="int", default=6, help="Batchsize")
+    parser.add_option("--batch_size", type="int", default=12, help="Batchsize")
     parser.add_option(
         "-i",
         "--data_input_dir",
